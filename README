@@ -56,6 +56,7 @@ This will spin up the backend for the Postgres and the API backend that will be 
 - **Description**: Create a new Todo record.
 - **Request Body**:
   - `display_name` (JSON field, string, optional): The display name of the Todo record.
+  - `due_by` (JSON field, string, optional): The due by date of the Todo record in ISO 8601 format
 - **Response**:
   - `200 OK`: Todo record created successfully.
   - `400 Bad Request`: Invalid request.
@@ -69,7 +70,7 @@ This will spin up the backend for the Postgres and the API backend that will be 
   - `id` (path parameter, required): The ID of the Todo record.
 - **Request Body**:
   - `display_name` (JSON field, string, optional): The display name of the TODO record.
-  - `due_by` (JSON field, string, optional): A timestamp field in _____ format.
+  - `due_by` (JSON field, string, optional): A timestamp field in ISO 8601 format.
 - **Response**:
   - `200 OK`: Returns the updated Todo record.
   - `400 Bad Request`: Invalid request.
@@ -82,9 +83,6 @@ This will spin up the backend for the Postgres and the API backend that will be 
 - **Description**: Deletes a specific Todo record from the database with the given ID.
 - **Request Parameters**:
   - `id` (path parameter, required): The ID of the Todo record.
-- **Request Body**:
-  - `display_name` (JSON field, string, optional): The display name of the TODO record.
-  - `due_by` (JSON field, string, optional): A timestamp field in _____ format.
 - **Response**:
   - `200 OK`: Returns a successful message response as a string.
   - `400 Bad Request`: Invalid request.

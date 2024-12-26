@@ -22,6 +22,9 @@ func (tr *TodoRepository) Search(search *model.TodoSearchParams) ([]*model.Todo,
 	if search.DisplayName != nil {
 		query = query.Where("display_name = ?", *search.DisplayName)
 	}
+	if search.DueBy != nil {
+		query = query.Where("due_by = ?", *search.DueBy)
+	}
 
 	result := query.Find(&todos)
 	if result.Error != nil {

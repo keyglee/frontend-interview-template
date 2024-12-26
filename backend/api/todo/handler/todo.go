@@ -1,13 +1,15 @@
 package handler
 
 import (
+	"time"
+
 	"github.com/keyglee/assessment/lib/todo/model"
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
 
 type GetTodoRequest struct {
-	ID uint `json:"id" param:"id" validate:"required"`
+	ID uint `param:"id"`
 }
 
 func (h *Handler) GetTodo(c echo.Context) error {
@@ -30,8 +32,9 @@ func (h *Handler) GetTodo(c echo.Context) error {
 }
 
 type SearchTodosRequest struct {
-	ID          *uint   `param:"id"`
-	DisplayName *string `param:"display_name"`
+	ID          *uint   `query:"id"`
+	DisplayName *string `query:"display_name"`
+	DueBy       *string `query:"due_by"`
 }
 
 func (h *Handler) SearchTodos(c echo.Context) error {
@@ -45,6 +48,14 @@ func (h *Handler) SearchTodos(c echo.Context) error {
 		DisplayName: req.DisplayName,
 	}
 
+	if req.DueBy != nil {
+		parsedDueBy, err := h.parseDate(*req.DueBy)
+		if err != nil {
+			return c.JSON(400, "Invalid date format. Please use ISO 8601 format.")
+		}
+		search.DueBy = &parsedDueBy
+	}
+
 	todos, err := h.TodoRepository.Search(search)
 	h.logger.Infof("Searching todos: %v", todos)
 	if err != nil {
@@ -56,7 +67,8 @@ func (h *Handler) SearchTodos(c echo.Context) error {
 }
 
 type CreateTodoRequest struct {
-	DisplayName string `json:"display_name"`
+	DisplayName string  `json:"display_name"`
+	DueBy       *string `json:"due_by"`
 }
 
 func (h *Handler) CreateTodo(c echo.Context) error {
@@ -66,22 +78,31 @@ func (h *Handler) CreateTodo(c echo.Context) error {
 		return c.JSON(400, "Invalid request.")
 	}
 
-	toDoItem := &model.Todo{
+	todo := &model.Todo{
 		DisplayName: req.DisplayName,
 	}
 
-	err := h.TodoRepository.Create(toDoItem)
+	if req.DueBy != nil {
+		parsedDueBy, err := h.parseDate(*req.DueBy)
+		if err != nil {
+			return c.JSON(400, "Invalid date format. Please use ISO 8601 format.")
+		}
+		todo.DueBy = parsedDueBy
+	}
+
+	err := h.TodoRepository.Create(todo)
 	if err != nil {
 		h.logger.Errorf("Error creating todo: %v", err)
 		return c.JSON(500, "Internal server error.")
 	}
 
-	return c.JSON(201, toDoItem)
+	return c.JSON(201, todo)
 }
 
 type UpdateTodoRequest struct {
-	ID          uint    `param:"id" validate:"required"`
+	ID          uint    `param:"id"`
 	DisplayName *string `json:"display_name"`
+	DueBy       *string `json:"due_by"`
 }
 
 func (h *Handler) UpdateTodo(c echo.Context) error {
@@ -91,16 +112,24 @@ func (h *Handler) UpdateTodo(c echo.Context) error {
 		return c.JSON(400, "Invalid request.")
 	}
 
+	update := &model.UpdateTodo{
+		DisplayName: req.DisplayName,
+	}
+
+	if req.DueBy != nil {
+		parsedDueBy, err := h.parseDate(*req.DueBy)
+		if err != nil {
+			return c.JSON(400, "Invalid date format. Please use ISO 8601 format.")
+		}
+		update.DueBy = &parsedDueBy
+	}
+
 	existingTodo, err := h.TodoRepository.GetByID(req.ID)
 	if err == gorm.ErrRecordNotFound {
 		return c.JSON(404, "Todo not found.")
 	}
 	if err != nil {
 		return c.JSON(500, "Internal server error.")
-	}
-
-	update := &model.UpdateTodo{
-		DisplayName: req.DisplayName,
 	}
 
 	err = h.TodoRepository.Update(existingTodo, update)
@@ -113,7 +142,7 @@ func (h *Handler) UpdateTodo(c echo.Context) error {
 }
 
 type DeleteTodoRequest struct {
-	ID uint `param:"id" validate:"required"`
+	ID uint `param:"id"`
 }
 
 func (h *Handler) DeleteTodo(c echo.Context) error {
@@ -139,4 +168,13 @@ func (h *Handler) DeleteTodo(c echo.Context) error {
 	}
 
 	return c.JSON(200, "Todo deleted.")
+}
+
+func (h *Handler) parseDate(date string) (time.Time, error) {
+	parsedDate, err := time.Parse(time.RFC3339, date)
+	if err != nil {
+		return time.Time{}, err
+	}
+
+	return parsedDate, nil
 }
