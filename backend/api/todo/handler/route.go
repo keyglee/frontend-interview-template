@@ -12,5 +12,4 @@ func (h *Handler) RegisterRoutes(router *echo.Group) {
 	router.PUT("/todo/:id", h.UpdateTodo)
 	router.POST("/todo", h.CreateTodo)
 	router.DELETE("/todo/:id", h.DeleteTodo)
-
 }

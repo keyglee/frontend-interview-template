@@ -30,7 +30,7 @@ func (h *Handler) GetTodo(c echo.Context) error {
 }
 
 type SearchTodosRequest struct {
-	TodoID      *uint   `param:"todo_id"`
+	ID          *uint   `param:"id"`
 	DisplayName *string `param:"display_name"`
 }
 
@@ -41,7 +41,7 @@ func (h *Handler) SearchTodos(c echo.Context) error {
 	}
 
 	search := &model.TodoSearchParams{
-		ID:          req.TodoID,
+		ID:          req.ID,
 		DisplayName: req.DisplayName,
 	}
 
@@ -56,8 +56,7 @@ func (h *Handler) SearchTodos(c echo.Context) error {
 }
 
 type CreateTodoRequest struct {
-	ToDoListItemID uint   `json:"todo_id" param:"todo_id" validate:"required"`
-	DisplayName    string `json:"display_name"`
+	DisplayName string `json:"display_name"`
 }
 
 func (h *Handler) CreateTodo(c echo.Context) error {
@@ -68,7 +67,6 @@ func (h *Handler) CreateTodo(c echo.Context) error {
 	}
 
 	toDoItem := &model.Todo{
-		ID:          req.ToDoListItemID,
 		DisplayName: req.DisplayName,
 	}
 
@@ -82,9 +80,8 @@ func (h *Handler) CreateTodo(c echo.Context) error {
 }
 
 type UpdateTodoRequest struct {
-	ID          uint   `param:"id" validate:"required"`
-	TodoID      uint   `json:"todo_id" param:"todo_id" validate:"required"`
-	DisplayName string `json:"display_name"`
+	ID          uint    `param:"id" validate:"required"`
+	DisplayName *string `json:"display_name"`
 }
 
 func (h *Handler) UpdateTodo(c echo.Context) error {
@@ -103,7 +100,7 @@ func (h *Handler) UpdateTodo(c echo.Context) error {
 	}
 
 	update := &model.UpdateTodo{
-		DisplayName: &req.DisplayName,
+		DisplayName: req.DisplayName,
 	}
 
 	err = h.TodoRepository.Update(existingTodo, update)
@@ -126,7 +123,7 @@ func (h *Handler) DeleteTodo(c echo.Context) error {
 		return c.JSON(400, "Invalid request.")
 	}
 
-	toDoItem, err := h.TodoRepository.GetByID(req.ID)
+	todo, err := h.TodoRepository.GetByID(req.ID)
 	if err == gorm.ErrRecordNotFound {
 		return c.JSON(404, "Todo not found.")
 	}
@@ -135,7 +132,7 @@ func (h *Handler) DeleteTodo(c echo.Context) error {
 		return c.JSON(500, "Internal server error.")
 	}
 
-	err = h.TodoRepository.Delete(toDoItem)
+	err = h.TodoRepository.Delete(todo)
 	if err != nil {
 		h.logger.Errorf("Error deleting todo: %v", err)
 		return c.JSON(500, "Internal server error.")
