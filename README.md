@@ -22,7 +22,7 @@ You will need to ensure you have a couple things installed to be able to test yo
 Create a basic todo list frontend app that hits the local backend api we provided.
 
 - Clone this repository.
-- Spin up the local API by running `docker compose up` within the backend folder
+- Spin up the local API by running `docker compose up` (add `-d` to run in the background) within the backend folder
 - Make sure to run `npm i` within the `todo-demo` folder (if you plan to build off of this). Then run `npm run dev` to run the next.js app locally (if you use our template).
 - Make a frontend capable of reading the TODOs as well as creating new TODOs via the API
 - Optionally add functionality to UPDATE and DELETE todo records.
