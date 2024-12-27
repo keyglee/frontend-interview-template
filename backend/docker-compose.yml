@@ -20,6 +20,8 @@ services:
       - DB_POST=5432
     networks:
       - api-network
+    depends_on:
+      - postgres
     working_dir: /app
     command: air -c api/todo/air.toml
   

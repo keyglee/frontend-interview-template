@@ -45,6 +45,8 @@ To learn more about Next.js, take a look at the following resources:
 
 ## Backend API
 
+Base URL is `http://localhost:4000`
+
 ### 1. Get Todo
 - **Endpoint**: `/todo/:id`
 - **Method**: `GET`
