@@ -9,7 +9,6 @@
 
 You will need to ensure you have a couple things installed to be able to test your code locally
 
-- Go - [Go docs](https://go.dev/doc/)
 - Node - [Node Homepage](https://nodejs.org/en)
   - There are plenty of different ways to install node, you should have at least version 16
   - This project will use `npm` for installing packages
