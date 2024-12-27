@@ -25,7 +25,9 @@ export default function Home() {
         <h4>Goals</h4>
         <ul>
           <li>Functionality to read the current TODOs from the API</li>
-          <li>Functionality to create new TODOs from the frontend to the API</li>
+          <li>
+            Functionality to create new TODOs from the frontend to the API
+          </li>
           <li>Show off your coding style!</li>
         </ul>
         <h4>Optional</h4>
@@ -33,7 +35,10 @@ export default function Home() {
           <li>Functionality to update existing TODOs</li>
           <li>Functionality to delete existing TODOs</li>
         </ul>
-        <p>Try to limit yourself to no more than 2 hours. We really don&apos;t want you spending all your free time working on this.</p>
+        <p>
+          Try to limit yourself to no more than 2 hours. We really don&apos;t
+          want you spending all your free time working on this.
+        </p>
         <h3 className="text-xl font-bold">The Frontend</h3>
         <p>
           The frontend provided is a starter for a react/next.js app. Feel free
@@ -48,13 +53,17 @@ export default function Home() {
           <li>Tailwindcss</li>
           <li>Typescript</li>
         </ul>
-        <p>Tailwindcss is currently disabled via the globals.css file, feel free to re-enable it.</p>
+        <p>
+          Tailwindcss is currently disabled via the globals.css file, feel free
+          to re-enable it.
+        </p>
         <h3 className="text-xl font-bold">The Backend</h3>
         <p>
           The backend is a simple REST API that you can interact with via API
           calls from your frontend. By default the backend&apos;s base url will
-          be `http://localhost:4000` with additional routes for the resource type
-          itself (for example: GET `http://localhost:4000/todo` will get all todos).
+          be `http://localhost:4000` with additional routes for the resource
+          type itself (for example: GET `http://localhost:4000/todo` will get
+          all todos).
         </p>
         <p>
           Additional API routes and documentation is provided in the

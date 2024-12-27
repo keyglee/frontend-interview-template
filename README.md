@@ -22,7 +22,7 @@ After successfully installing the previous pre-requisites, run the docker compos
 docker compose up
 ```
 
-This will spin up the backend for the Postgres and the API that you can hit from your frontend.
+This will spin up the backend for the Postgres and the API that you can hit from your frontend app.
 
 ## Frontend
 
