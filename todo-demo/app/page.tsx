@@ -53,8 +53,8 @@ export default function Home() {
         <p>
           The backend is a simple REST API that you can interact with via API
           calls from your frontend. By default the backend&apos;s base url will
-          be `localhost:4000` with additional routes for the resource type
-          itself (for example: GET `localhost:4000/todo` will get all todos).
+          be `http://localhost:4000` with additional routes for the resource type
+          itself (for example: GET `http://localhost:4000/todo` will get all todos).
         </p>
         <p>
           Additional API routes and documentation is provided in the
