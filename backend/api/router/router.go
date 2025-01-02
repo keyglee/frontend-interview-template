@@ -20,6 +20,12 @@ func New() *echo.Echo {
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"*"},
 		AllowMethods: []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete},
+		AllowHeaders: []string{
+			echo.HeaderOrigin,
+			echo.HeaderContentType,
+			echo.HeaderAccept,
+			echo.HeaderAuthorization,
+		},
 	}))
 
 	// Middleware to handle JSON requests
